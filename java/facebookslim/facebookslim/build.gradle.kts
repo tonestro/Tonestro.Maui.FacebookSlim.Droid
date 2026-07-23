@@ -31,9 +31,9 @@ configurations {
 
 dependencies {
 
-    implementation("com.facebook.android:facebook-android-sdk:17.0.2")
+    implementation("com.facebook.android:facebook-android-sdk:18.3.0")
 
-    "copyDependencies"("com.facebook.android:facebook-android-sdk:17.0.2")
+    "copyDependencies"("com.facebook.android:facebook-android-sdk:18.3.0")
 }
 java {
     toolchain {
