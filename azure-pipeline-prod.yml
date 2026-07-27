@@ -84,7 +84,7 @@ steps:
   - task: GitHubRelease@1
     inputs:
       gitHubConnection: "github.com_thisisthekap"
-      repositoryName: "thisisthekap/Tonestro.Maui.FacebookSlim.Droid"
+      repositoryName: "tonestro/Tonestro.Maui.FacebookSlim.Droid"
       action: "create"
       target: "$(Build.SourceVersion)"
       tagSource: "userSpecifiedTag"
