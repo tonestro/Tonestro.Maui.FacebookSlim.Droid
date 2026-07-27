@@ -52,6 +52,18 @@ steps:
       else
         echo "NUGET SIZE: ${st_size}"
       fi
+      numberOfSymbolFiles=$(ls *.snupkg | wc -l)
+      if [[ numberOfSymbolFiles -ne 1 ]]; then
+        echo "WRONG NUMBER OF SYMBOL PACKAGE FILES: ${numberOfSymbolFiles}"
+        exit 1
+      fi
+      eval $(stat -s *.snupkg)
+      if [[ $st_size -lt 10000 ]]; then
+        echo "SYMBOL PACKAGE FILE TOO SMALL: ${st_size}"
+        exit 1
+      else
+        echo "SYMBOL PACKAGE SIZE: ${st_size}"
+      fi
       cd ../..
     displayName: Check nuget file
 
@@ -63,6 +75,9 @@ steps:
       publishLocation: "Container"
       StoreAsTar: true
 
+  # Pushing the .nupkg also pushes the .snupkg lying next to it to the
+  # nuget.org symbol server (see
+  # https://learn.microsoft.com/en-us/nuget/create-packages/symbol-packages-snupkg)
   - bash: |
       dotnet nuget push Tonestro.Maui.FacebookSlim.Droid/nugetoutput/Tonestro.Maui.FacebookSlim.Droid.*.nupkg -k "$(nugetOrgApiKey)" -s https://api.nuget.org/v3/index.json
 
@@ -75,6 +90,8 @@ steps:
       tagSource: "userSpecifiedTag"
       tag: "$(Build.SourceBranchName)"
       title: "Tonestro.Maui.FacebookSlim.Droid $(bindingsVersion)"
-      assets: "Tonestro.Maui.FacebookSlim.Droid/nugetoutput/Tonestro.Maui.FacebookSlim.Droid.*.nupkg"
+      assets: |
+        Tonestro.Maui.FacebookSlim.Droid/nugetoutput/Tonestro.Maui.FacebookSlim.Droid.*.nupkg
+        Tonestro.Maui.FacebookSlim.Droid/nugetoutput/Tonestro.Maui.FacebookSlim.Droid.*.snupkg
       changeLogCompareToRelease: "lastFullRelease"
       changeLogType: "issueBased"

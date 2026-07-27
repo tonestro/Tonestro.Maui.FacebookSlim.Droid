@@ -45,6 +45,18 @@ steps:
       else
         echo "NUGET SIZE: ${st_size}"
       fi
+      numberOfSymbolFiles=$(ls *.snupkg | wc -l)
+      if [[ numberOfSymbolFiles -ne 1 ]]; then
+        echo "WRONG NUMBER OF SYMBOL PACKAGE FILES: ${numberOfSymbolFiles}"
+        exit 1
+      fi
+      eval $(stat -s *.snupkg)
+      if [[ $st_size -lt 10000 ]]; then
+        echo "SYMBOL PACKAGE FILE TOO SMALL: ${st_size}"
+        exit 1
+      else
+        echo "SYMBOL PACKAGE SIZE: ${st_size}"
+      fi
       cd ../..
     displayName: Check nuget file
 
