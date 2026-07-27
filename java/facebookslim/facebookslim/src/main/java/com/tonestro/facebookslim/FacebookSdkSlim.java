@@ -20,4 +20,8 @@ public class FacebookSdkSlim {
     public static void addLoggingBehavior(String loggingBehavior) {
         FacebookSdk.addLoggingBehavior(LoggingBehavior.valueOf(loggingBehavior));
     }
+
+    public static String getSdkVersion() {
+        return FacebookSdk.getSdkVersion();
+    }
 }
