@@ -22,6 +22,16 @@ steps:
     displayName: Set Build Number
 
   - bash: |
+      version=$(grep -oE '<Version>[^<]+</Version>' Tonestro.Maui.FacebookSlim.Droid/Tonestro.Maui.FacebookSlim.Droid.csproj | head -1 | sed -E 's/<\/?Version>//g')
+      if [[ -z "$version" ]]; then
+        echo "ERROR: Could not extract <Version> from Tonestro.Maui.FacebookSlim.Droid.csproj"
+        exit 1
+      fi
+      echo "Binding version: ${version}"
+      echo "##vso[task.setvariable variable=bindingsVersion]${version}"
+    displayName: Extract Binding Version
+
+  - bash: |
       sudo dotnet workload restore
     displayName: Restore Workloads
 
